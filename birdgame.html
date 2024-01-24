@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Game</title>
+    <style>
+        /* CSS for the game elements */
+        #gameArea {
+            width: 900px;
+            height: 900px;
+            border: 1px solid black;
+            position: relative;
+            overflow: hidden;
+            background-color: #ddf;
+        }
+        .bird {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background: url('bird.png') no-repeat center center;
+            background-size: cover;
+        }
+        .worm {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background: url('worm.png') no-repeat center center;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+
+<div id="gameArea">
+    <div class="bird" id="bird"></div>
+    <div class="worm" id="worm"></div>
+</div>
+
+<script>
+    // JavaScript for game functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const bird = document.getElementById('bird');
+        const worm = document.getElementById('worm');
+        let birdX = 0;
+        let birdY = 0;
+        const speed = 10;
+
+        // Randomize worm position
+        function randomizeWorm() {
+            worm.style.left = Math.floor(Math.random() * (600 - 20)) + 'px';
+            worm.style.top = Math.floor(Math.random() * (400 - 20)) + 'px';
+        }
+
+        randomizeWorm();
+
+        document.addEventListener('keydown', function(event) {
+            switch (event.key) {
+                case 'ArrowUp':
+                    birdY = Math.max(birdY - speed, 0);
+                    break;
+                case 'ArrowDown':
+                    birdY = Math.min(birdY + speed, 350);
+                    break;
+                case 'ArrowLeft':
+                    birdX = Math.max(birdX - speed, 0);
+                    break;
+                case 'ArrowRight':
+                    birdX = Math.min(birdX + speed, 550);
+                    break;
+            }
+            bird.style.left = birdX + 'px';
+            bird.style.top = birdY + 'px';
+
+            // Check for collision
+            if (birdX < parseInt(worm.style.left) + 20 &&
+                birdX + 50 > parseInt(worm.style.left) &&
+                birdY < parseInt(worm.style.top) + 20 &&
+                birdY + 50 > parseInt(worm.style.top)) {
+                    randomizeWorm();
+                    // Increase score or any other logic
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
